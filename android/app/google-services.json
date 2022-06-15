@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "350783008703",
+    "project_id": "eone-on-demand",
+    "storage_bucket": "eone-on-demand.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:350783008703:android:3f01c58251512bf2af3b0a",
+        "android_client_info": {
+          "package_name": "com.eone.energyone_station"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "350783008703-k1ggi6bt6dk2n2fj0gfr16eg05f53l0m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCNE6F3025kS5NyXCmQ-TRgNBS75uZi8v0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "350783008703-k1ggi6bt6dk2n2fj0gfr16eg05f53l0m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:350783008703:android:d4369d9d43840ffcaf3b0a",
+        "android_client_info": {
+          "package_name": "com.example.energy_delivery"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "350783008703-k1ggi6bt6dk2n2fj0gfr16eg05f53l0m.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCNE6F3025kS5NyXCmQ-TRgNBS75uZi8v0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "350783008703-k1ggi6bt6dk2n2fj0gfr16eg05f53l0m.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
