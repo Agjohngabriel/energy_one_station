@@ -3,6 +3,7 @@ import 'dart:async';
 import 'package:energyone_station/views/dasboard/dashboard.dart';
 import 'package:energyone_station/views/home/widget/botton_nav.dart';
 import 'package:energyone_station/views/home/widget/request_dialog.dart';
+import 'package:energyone_station/views/notification/notification_screen.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -12,7 +13,6 @@ import '../../controllers/order_controller.dart';
 import '../../helpers/apptheme.dart';
 import '../../helpers/dimension.dart';
 import '../../helpers/notification_helper.dart';
-import '../menu/menu_container.dart';
 import '../order/order_history_screen.dart';
 
 class Home extends StatefulWidget {
@@ -41,8 +41,8 @@ class _HomeState extends State<Home> {
 
     _screens = [
       Dashboard(),
+      NotificationScreen(),
       OrderHistoryScreen(),
-      Container(),
     ];
 
     Future.delayed(const Duration(seconds: 1), () {
@@ -115,7 +115,7 @@ class _HomeState extends State<Home> {
                     : Theme.of(context).cardColor,
                 onPressed: () => _setPage(1),
                 child: Icon(
-                  Icons.shopping_bag,
+                  Icons.notifications,
                   size: 30,
                   color: _pageIndex == 1
                       ? Theme.of(context).cardColor
@@ -141,13 +141,10 @@ class _HomeState extends State<Home> {
                         onTap: () => _setPage(0)),
                     const Expanded(child: SizedBox()),
                     BottomNavItem(
-                        iconData: Icons.menu,
-                        isSelected: _pageIndex == 2,
-                        onTap: () {
-                          Get.bottomSheet(MenuScreen(),
-                              backgroundColor: Colors.transparent,
-                              isScrollControlled: true);
-                        }),
+                      iconData: Icons.shopping_bag,
+                      isSelected: _pageIndex == 2,
+                      onTap: () => _setPage(2),
+                    ),
                   ]),
                 ),
               ),

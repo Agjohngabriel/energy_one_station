@@ -15,6 +15,8 @@ import '../../helpers/routes.dart';
 import '../../model/response/order_model.dart';
 import '../../widget/confirm_dialog.dart';
 import '../../widget/order_shimmer.dart';
+import '../menu/menu_container.dart';
+import '../order/widget/count_widget.dart';
 
 class Dashboard extends StatelessWidget {
   AuthController authController = Get.put(AuthController());
@@ -49,35 +51,40 @@ class Dashboard extends StatelessWidget {
           title: Image.asset('assets/energy_one.png', width: 120),
           actions: [
             IconButton(
-              icon: GetBuilder<NotificationController>(
-                  builder: (notificationController) {
-                bool _hasNewNotification = false;
-                if (notificationController.notificationList != null) {
-                  _hasNewNotification =
-                      notificationController.notificationList?.length !=
-                          notificationController.getSeenNotificationCount();
-                }
-                return Stack(children: [
-                  const Icon(Icons.notifications,
-                      size: 25, color: AppTheme.blue),
-                  _hasNewNotification
-                      ? Positioned(
-                          top: 0,
-                          right: 0,
-                          child: Container(
-                            height: 10,
-                            width: 10,
-                            decoration: BoxDecoration(
-                              color: AppTheme.blue,
-                              shape: BoxShape.circle,
-                              border: Border.all(
-                                  width: 1, color: Theme.of(context).cardColor),
-                            ),
-                          ))
-                      : const SizedBox(),
-                ]);
-              }),
-              onPressed: () => Get.toNamed(RouteHelper.getNotificationRoute()),
+              icon: const Icon(Icons.menu, color: AppTheme.blue,size: 25,),
+              // GetBuilder<NotificationController>(
+              //     builder: (notificationController) {
+              //   bool _hasNewNotification = false;
+              //   if (notificationController.notificationList != null) {
+              //     _hasNewNotification =
+              //         notificationController.notificationList?.length !=
+              //             notificationController.getSeenNotificationCount();
+              //   }
+              //   return Stack(children: [
+              //     const Icon(Icons.menu,
+              //         size: 25, color: AppTheme.blue),
+              //     _hasNewNotification
+              //         ? Positioned(
+              //             top: 0,
+              //             right: 0,
+              //             child: Container(
+              //               height: 10,
+              //               width: 10,
+              //               decoration: BoxDecoration(
+              //                 color: AppTheme.blue,
+              //                 shape: BoxShape.circle,
+              //                 border: Border.all(
+              //                     width: 1, color: Theme.of(context).cardColor),
+              //               ),
+              //             ))
+              //         : const SizedBox(),
+              //   ]);
+              // }),
+              onPressed: () {
+                Get.bottomSheet(MenuScreen(),
+                    backgroundColor: Colors.transparent,
+                    isScrollControlled: true);
+              },
             )
           ],
         ),
@@ -86,7 +93,7 @@ class Dashboard extends StatelessWidget {
               await _loadData();
             },
             child: SingleChildScrollView(
-              padding: const EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
+              padding: const EdgeInsets.all(15),
               physics: const AlwaysScrollableScrollPhysics(),
               child: Column(children: [
                 GetBuilder<AuthController>(builder: (authController) {
@@ -108,7 +115,7 @@ class Dashboard extends StatelessWidget {
                       child: Row(children: [
                         Expanded(
                             child: Text(
-                          'Station is closed',
+                          "Station is ${authController.profileModel!.station!.active ? "Online" : "Offline"}",
                           style: GoogleFonts.mulish(),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -117,15 +124,17 @@ class Dashboard extends StatelessWidget {
                             ? Switch(
                                 value: authController
                                     .profileModel!.station!.active,
-                                activeColor: AppTheme.blue,
+                                activeColor: Colors.green[100],
+                                inactiveThumbColor: Colors.red[100],
                                 materialTapTargetSize:
                                     MaterialTapTargetSize.shrinkWrap,
                                 onChanged: (bool isActive) {
                                   Get.dialog(ConfirmationDialog(
+                                    title: !isActive ? "Going Offline?" : "Going Online?",
                                     icon: 'assets/warning.png',
-                                    description: isActive
-                                        ? 'Are you sure you want to close station'
-                                        : 'Are you sure you to open station',
+                                    description: !isActive
+                                        ? 'Your station will longer receive orders'
+                                        : 'Your station will be available to receive orders',
                                     onYesPressed: () {
                                       Get.back();
                                       authController
@@ -145,34 +154,35 @@ class Dashboard extends StatelessWidget {
                                 )),
                       ]),
                     ),
-                    const SizedBox(height: Dimensions.PADDING_SIZE_SMALL),
+                    const SizedBox(height: 25),
                     Container(
-                      padding:
-                          const EdgeInsets.all(Dimensions.PADDING_SIZE_LARGE),
+                      padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        borderRadius:
-                            BorderRadius.circular(Dimensions.RADIUS_SMALL),
+                        borderRadius: BorderRadius.circular(10),
                         color: AppTheme.blue,
                       ),
                       child: Column(children: [
                         Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Image.asset('assets/wallet.png',
-                                  width: 60, height: 60),
-                              const SizedBox(
-                                  width: Dimensions.PADDING_SIZE_LARGE),
+                              Image.asset(
+                                'assets/wallet.png',
+                                scale: 3,
+                              ),
+                              const SizedBox(width: 18),
                               Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text(
-                                      'today'.tr,
+                                      'Today'.tr,
                                       style: GoogleFonts.mulish(
-                                          fontSize: Dimensions.FONT_SIZE_SMALL,
-                                          color: Theme.of(context).cardColor),
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w400,
+                                          letterSpacing: 0.6,
+                                          color:
+                                              AppTheme.white.withOpacity(0.8)),
                                     ),
-                                    const SizedBox(
-                                        height: Dimensions.PADDING_SIZE_SMALL),
+                                    const SizedBox(height: 8),
                                     Text(
                                       authController.profileModel != null
                                           ? PriceConverter.convertPrice(
@@ -180,58 +190,145 @@ class Dashboard extends StatelessWidget {
                                                   .profileModel!.todaysEarning!)
                                           : '0',
                                       style: GoogleFonts.mulish(
-                                          fontSize: 24,
-                                          color: Theme.of(context).cardColor),
+                                          fontSize: 19,
+                                          fontWeight: FontWeight.w600,
+                                          color: AppTheme.white),
                                     ),
                                   ]),
                             ]),
                         const SizedBox(height: 30),
-                        Row(children: [
-                          Expanded(
-                              child: Column(children: [
-                            Text(
-                              'This week'.tr,
-                              style: GoogleFonts.mulish(
-                                  fontSize: Dimensions.FONT_SIZE_SMALL,
-                                  color: Theme.of(context).cardColor),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        'This week'.tr,
+                                        style: GoogleFonts.mulish(
+                                            fontSize: 15,
+                                            fontWeight: FontWeight.w400,
+                                            letterSpacing: 0.6,
+                                            color:
+                                                AppTheme.white.withOpacity(0.8)),
+                                      ),
+                                      Divider(thickness: 1, color: AppTheme.white.withOpacity(0.8)),
+                                      Text(
+                                        authController.profileModel != null
+                                            ? PriceConverter.convertPrice(
+                                                authController.profileModel!
+                                                    .thisWeekEarning!)
+                                            : '0',
+                                        style: GoogleFonts.mulish(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w600,
+                                            color: AppTheme.white),
+                                      ),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Image.asset('assets/order.png',
+                                                color:
+                                                    Theme.of(context).cardColor,
+                                                height: 12,
+                                                width: 12),
+                                            const SizedBox(
+                                                width: Dimensions
+                                                    .PADDING_SIZE_EXTRA_SMALL),
+                                            Text(
+                                                "${authController.profileModel!.thisWeekOrderCount!}",
+                                                style: GoogleFonts.mulish(
+                                                  fontWeight: FontWeight.w600,
+                                                  fontSize: Dimensions
+                                                      .FONT_SIZE_EXTRA_LARGE,
+                                                  color:
+                                                      Theme.of(context).cardColor,
+                                                )),
+                                            SizedBox(width: 9,),
+                                            Text(
+                                              'orders'.tr,
+                                              style: GoogleFonts.mulish(
+                                                  fontSize: 12,
+                                                  fontWeight: FontWeight.w300,
+                                                  letterSpacing: 0.6,
+                                                  color:
+                                                  AppTheme.white.withOpacity(0.8)),
+                                            ),
+                                          ]),
+                                    ]),
+                              ),
                             ),
-                            const SizedBox(
-                                height: Dimensions.PADDING_SIZE_SMALL),
-                            Text(
-                              authController.profileModel != null
-                                  ? PriceConverter.convertPrice(authController
-                                      .profileModel!.thisWeekEarning!)
-                                  : '0',
-                              style: GoogleFonts.mulish(
-                                  fontSize: Dimensions.FONT_SIZE_EXTRA_LARGE,
-                                  color: Theme.of(context).cardColor),
-                            ),
-                          ])),
-                          Container(
-                              height: 30,
-                              width: 1,
-                              color: Theme.of(context).cardColor),
-                          Expanded(
-                              child: Column(children: [
-                            Text(
-                              'This month'.tr,
-                              style: GoogleFonts.mulish(
-                                  fontSize: Dimensions.FONT_SIZE_SMALL,
-                                  color: Theme.of(context).cardColor),
-                            ),
-                            const SizedBox(
-                                height: Dimensions.PADDING_SIZE_SMALL),
-                            Text(
-                              authController.profileModel != null
-                                  ? PriceConverter.convertPrice(authController
-                                      .profileModel!.thisMonthEarning!)
-                                  : '0',
-                              style: GoogleFonts.mulish(
-                                  fontSize: Dimensions.FONT_SIZE_EXTRA_LARGE,
-                                  color: Theme.of(context).cardColor),
-                            ),
-                          ])),
-                        ]),
+                            Expanded(
+                                child: Padding(
+                                  padding: const EdgeInsets.all(15.0),
+                                  child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.center,
+                                      children: [
+                                    Text(
+                                      'This month'.tr,
+                                      style: GoogleFonts.mulish(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w400,
+                                          letterSpacing: 0.6,
+                                          color: AppTheme.white.withOpacity(0.8)),
+                                    ),
+                                        Divider(thickness: 1, color: AppTheme.white.withOpacity(0.8)),
+                                    Text(
+                                      authController.profileModel != null
+                                          ? PriceConverter.convertPrice(
+                                              authController
+                                                  .profileModel!.thisWeekEarning!)
+                                          : '0',
+                                      style: GoogleFonts.mulish(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w600,
+                                          color: AppTheme.white),
+                                    ),
+                                    const SizedBox(
+                                      height: 10,
+                                    ),
+                                    Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
+                                        children: [
+                                          Image.asset('assets/order.png',
+                                              color: Theme.of(context).cardColor,
+                                              height: 12,
+                                              width: 12),
+                                          const SizedBox(
+                                              width: Dimensions
+                                                  .PADDING_SIZE_EXTRA_SMALL),
+                                          Text(
+                                              "${authController.profileModel!.thisMonthOrderCount!}",
+                                              style: GoogleFonts.mulish(
+                                                fontWeight: FontWeight.w600,
+                                                fontSize: Dimensions
+                                                    .FONT_SIZE_EXTRA_LARGE,
+                                                color:
+                                                    Theme.of(context).cardColor,
+                                              )),
+                                          SizedBox(width: 9,),
+                                          Text(
+                                            'orders'.tr,
+                                            style: GoogleFonts.mulish(
+                                                fontSize: 12,
+                                                fontWeight: FontWeight.w300,
+                                                letterSpacing: 0.6,
+                                                color:
+                                                AppTheme.white.withOpacity(0.8)),
+                                          ),
+                                        ]),
+                                  ]),
+                                )),
+                          ],
+                        ),
                       ]),
                     ),
                   ]);
@@ -247,7 +344,7 @@ class Dashboard extends StatelessWidget {
                   return Column(children: [
                     orderController.runningOrders != null
                         ? Container(
-                            height: 40,
+                            height: 60,
                             decoration: BoxDecoration(
                               border: Border.all(
                                   color: Theme.of(context).disabledColor,

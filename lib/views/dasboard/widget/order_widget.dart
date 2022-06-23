@@ -30,7 +30,7 @@ class OrderWidget extends StatelessWidget {
           )),
       child: Column(children: [
         Padding(
-          padding: const EdgeInsets.all(Dimensions.PADDING_SIZE_SMALL),
+          padding: const EdgeInsets.all(14),
           child:
               Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
             Expanded(
@@ -38,18 +38,25 @@ class OrderWidget extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                   Text('${'Order Id'}: #${orderModel.id}',
-                      style: GoogleFonts.mulish()),
+                      style: GoogleFonts.mulish(
+                          fontSize: 15,
+                          fontWeight: FontWeight.w400,
+                          letterSpacing: 0.3,
+                          color: AppTheme.black.withOpacity(0.8)
+                      )),
                   const SizedBox(height: Dimensions.PADDING_SIZE_EXTRA_SMALL),
                   Row(children: [
                     Text(
                       DateConverter.dateTimeStringToDateTime(
                           '${orderModel.createdAt}'),
                       style: GoogleFonts.mulish(
-                          fontSize: Dimensions.FONT_SIZE_SMALL,
-                          color: Theme.of(context).disabledColor),
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                          letterSpacing: 0.6,
+                          color: AppTheme.grey),
                     ),
                     Container(
-                      height: 10,
+                      height: 20,
                       width: 1,
                       color: Theme.of(context).disabledColor,
                       margin: const EdgeInsets.symmetric(
@@ -71,26 +78,27 @@ class OrderWidget extends StatelessWidget {
                     child: Text(
                       orderModel.orderStatus!.toUpperCase(),
                       style: GoogleFonts.mulish(
-                          fontWeight: FontWeight.w500,
-                          fontSize: Dimensions.FONT_SIZE_SMALL,
-                          color: Theme.of(context).cardColor),
+                          fontSize: 15,
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: 0.3,
+                          color: AppTheme.white.withOpacity(0.8)),
                     ),
                   )
                 : Text(
                     '${orderModel.detailsCount} ${orderModel.detailsCount! < 2 ? 'item'.tr : 'items'.tr}',
                     style: GoogleFonts.mulish(
+                        fontSize: 15,
                         fontWeight: FontWeight.w400,
-                        fontSize: Dimensions.FONT_SIZE_SMALL,
-                        color: Theme.of(context).disabledColor),
+                        color: AppTheme.grey.withOpacity(0.8)),
                   ),
             showStatus
                 ? const SizedBox()
                 : const Icon(Icons.keyboard_arrow_right,
-                    size: 30, color: AppTheme.blue),
+                    size: 20, color: AppTheme.blue),
           ]),
         ),
         hasDivider
-            ? Divider(color: Theme.of(context).disabledColor)
+            ? const Divider(thickness: 1,)
             : const SizedBox(),
       ]),
     );

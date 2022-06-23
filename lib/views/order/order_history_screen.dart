@@ -82,7 +82,7 @@ class OrderHistoryScreen extends StatelessWidget {
                       itemCount: orderController.statusList.length,
                       itemBuilder: (context, index) {
                         return OrderButton(
-                          title: orderController.statusList[index].tr,
+                          title: orderController.statusList[index].toUpperCase(),
                           index: index,
                           orderController: orderController,
                           fromHistory: true,

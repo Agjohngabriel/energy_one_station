@@ -22,10 +22,17 @@ class MenuScreen extends StatelessWidget {
           backgroundColor: const Color(0xFF4389FF),
           route: RouteHelper.getProfileRoute()),
       MenuModel(
-        icon: 'assets/support.png',
+        icon: 'assets/edit.png',
         title: 'Add Product'.tr,
         backgroundColor: const Color(0xFFFF8A80),
         route: RouteHelper.getProductRoute(0),
+        isBlocked: false,
+      ),
+      MenuModel(
+        icon: 'assets/support.png',
+        title: 'Support'.tr,
+        backgroundColor: const Color(0xFFFF8A80),
+        route: RouteHelper.getSupportRoute(),
         isBlocked: false,
       ),
       MenuModel(

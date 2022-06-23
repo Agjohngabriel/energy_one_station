@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 
 import '../model/response/notification_model.dart';
@@ -15,7 +16,9 @@ class NotificationController extends GetxController implements GetxService {
 
   Future<void> getNotificationList() async {
     Response response = await _apiServices.getNotificationList();
-    print(response.statusCode);
+    if (kDebugMode) {
+      print(response.statusCode);
+    }
     if (response.statusCode == 200) {
       _notificationList = [];
       List<dynamic> _notifications = response.body.reversed.toList();

@@ -13,6 +13,7 @@ import '../views/profile/profile_screen.dart';
 import '../views/profile/setting.dart';
 import '../views/splashScreen.dart';
 import '../views/stations/stations_screen.dart';
+import '../views/support/support.dart';
 
 class RouteHelper {
   static const String initial = '/';
@@ -39,6 +40,7 @@ class RouteHelper {
   static const String deliveryMan = '/delivery-man';
   static const String addDeliveryMan = '/add-delivery-man';
   static const String deliveryManDetails = '/delivery-man-details';
+  static const String supportRoute = '/support';
 
   static String getInitialRoute() => initial;
   static String getSplashRoute() => splash;
@@ -61,6 +63,7 @@ class RouteHelper {
   static String getStationRoute() => station;
   static String getProductRoute(int id) => '$product?id=$id';
   static String getCategoriesRoute() => categories;
+  static String getSupportRoute() => supportRoute;
   // static String getSubCategoriesRoute(CategoryModel categoryModel) {
   //   List<int> _encoded = utf8.encode(jsonEncode(categoryModel.toJson()));
   //   String _data = base64Encode(_encoded);
@@ -121,6 +124,7 @@ class RouteHelper {
     // GetPage(name: updateProfile, page: () => UpdateProfileScreen()),
     GetPage(name: notification, page: () => NotificationScreen()),
     GetPage(name: station, page: () => StationScreen()),
+    GetPage(name: supportRoute, page: () => SupportScreen()),
     GetPage(
         name: product,
         page: () {

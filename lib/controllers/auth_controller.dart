@@ -1,15 +1,12 @@
 import 'dart:async';
-import 'dart:convert';
 
+import 'package:flutter/foundation.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../model/response/profile_model.dart';
-import '../model/response/response.dart';
 import '../services/api.dart';
 import '../services/api_services.dart';
-import 'package:location/location.dart';
-import 'package:http/http.dart' as http;
 
 import '../widget/snackbar.dart';
 
@@ -43,7 +40,9 @@ class AuthController extends GetxController implements GetxService {
 
   Future<void> getProfile() async {
     Response response = await _apiServices.fetchUser();
-    print('profile' '${response.statusCode}');
+    if (kDebugMode) {
+      print('profile' '${response.statusCode}');
+    }
     if (response.statusCode == 200) {
       _profileModel = ProfileModel.fromJson(response.body);
     } else {
@@ -55,7 +54,9 @@ class AuthController extends GetxController implements GetxService {
   Future<bool> updateActiveStatus() async {
     Response response = await _apiServices.updateActiveStatus();
     bool _isSuccess;
-    print(response.statusCode);
+    if (kDebugMode) {
+      print(response.statusCode);
+    }
     if (response.statusCode == 200) {
       showCustomSnackBar(response.body['message'], isError: false);
       _isSuccess = true;

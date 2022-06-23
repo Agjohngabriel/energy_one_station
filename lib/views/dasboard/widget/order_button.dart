@@ -37,9 +37,7 @@ class OrderButton extends StatelessWidget {
           : orderController.setOrderIndex(index),
       child: Row(children: [
         Container(
-          width: 130,
-          padding: const EdgeInsets.symmetric(
-              horizontal: Dimensions.PADDING_SIZE_DEFAULT),
+          padding: const EdgeInsets.symmetric(horizontal: 30),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(Dimensions.RADIUS_SMALL),
             color: isSelected ? AppTheme.blue : Theme.of(context).cardColor,
@@ -51,9 +49,7 @@ class OrderButton extends StatelessWidget {
             overflow: TextOverflow.ellipsis,
             style: GoogleFonts.mulish(
               fontSize: Dimensions.FONT_SIZE_SMALL,
-              color: isSelected
-                  ? Theme.of(context).cardColor
-                  : Theme.of(context).textTheme.bodyText1?.color,
+              color: isSelected ? AppTheme.white : AppTheme.black,
             ),
           ),
         ),

@@ -1,5 +1,4 @@
 import 'package:intl/intl.dart';
-import 'package:get/get.dart';
 
 class DateConverter {
   static String formatDate(DateTime dateTime) {
