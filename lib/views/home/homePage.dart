@@ -77,15 +77,15 @@ class _HomeState extends State<Home> {
       }
     });
     //
-    _timer = Timer.periodic(const Duration(seconds: 30), (timer) async {
-      await Get.find<OrderController>().getCurrentOrders();
-      int _count = Get.find<OrderController>().runningOrders!.length;
-      if (_orderCount != null && _orderCount! < _count) {
-        Get.dialog(NewRequestDialog());
-      } else {
-        _orderCount = Get.find<OrderController>().runningOrders!.length;
-      }
-    });
+    // _timer = Timer.periodic(const Duration(seconds: 30), (timer) async {
+    //   await Get.find<OrderController>().getCurrentOrders();
+    //   int _count = Get.find<OrderController>().runningOrders!.length;
+    //   if (_orderCount != null && _orderCount! < _count) {
+    //     Get.dialog(NewRequestDialog());
+    //   } else {
+    //     _orderCount = Get.find<OrderController>().runningOrders!.length;
+    //   }
+    // });
   }
 
   // @override
