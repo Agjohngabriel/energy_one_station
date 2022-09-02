@@ -13,7 +13,7 @@ import '../widget/snackbar.dart';
 class AuthController extends GetxController implements GetxService {
   final ApiServices _apiServices = Get.put(ApiServices());
   ProfileModel? _profileModel;
-  final bool _isLoading = false;
+  bool _isLoading = false;
   XFile? _pickedFile;
   XFile? get pickedFile => _pickedFile;
 
@@ -143,12 +143,15 @@ class AuthController extends GetxController implements GetxService {
   }
 
   Future<void> toggleStationClosedStatus() async {
+    _isLoading = true;
+    update();
     Response response = await _apiServices.toggleStationClosedStatus();
     if (response.statusCode == 200) {
       getProfile();
     } else {
       Api.checkApi(response);
     }
+    _isLoading = false;
     update();
   }
 }

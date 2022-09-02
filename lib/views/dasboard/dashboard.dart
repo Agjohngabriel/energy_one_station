@@ -51,7 +51,11 @@ class Dashboard extends StatelessWidget {
           title: Image.asset('assets/energy_one.png', width: 120),
           actions: [
             IconButton(
-              icon: const Icon(Icons.menu, color: AppTheme.blue,size: 25,),
+              icon: const Icon(
+                Icons.menu,
+                color: AppTheme.blue,
+                size: 25,
+              ),
               // GetBuilder<NotificationController>(
               //     builder: (notificationController) {
               //   bool _hasNewNotification = false;
@@ -112,47 +116,63 @@ class Dashboard extends StatelessWidget {
                               blurRadius: 5)
                         ],
                       ),
-                      child: Row(children: [
-                        Expanded(
-                            child: Text(
-                          "Station is ${authController.profileModel!.station!.active ? "Online" : "Offline"}",
-                          style: GoogleFonts.mulish(),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                        )),
-                        authController.profileModel != null
-                            ? Switch(
-                                value: authController
-                                    .profileModel!.station!.active,
-                                activeColor: Colors.green[100],
-                                inactiveThumbColor: Colors.red[100],
-                                materialTapTargetSize:
-                                    MaterialTapTargetSize.shrinkWrap,
-                                onChanged: (bool isActive) {
-                                  Get.dialog(ConfirmationDialog(
-                                    title: !isActive ? "Going Offline?" : "Going Online?",
-                                    icon: 'assets/warning.png',
-                                    description: !isActive
-                                        ? 'Your station will longer receive orders'
-                                        : 'Your station will be available to receive orders',
-                                    onYesPressed: () {
-                                      Get.back();
-                                      authController
-                                          .toggleStationClosedStatus();
-                                    },
-                                  ));
-                                },
-                              )
-                            : Shimmer(
-                                duration: const Duration(seconds: 2),
-                                child: Container(
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(5),
-                                      color: Colors.grey[300]),
-                                  height: 30,
-                                  width: 50,
-                                )),
-                      ]),
+                      child: Row(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Expanded(
+                                child: Text(
+                              "Station is ${authController.profileModel!.station!.active ? "Online" : "Offline"}",
+                              style: GoogleFonts.mulish(),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            )),
+                            !authController.isLoading
+                                ? authController.profileModel != null
+                                    ? Switch(
+                                        value: authController
+                                            .profileModel!.station!.active,
+                                        activeColor: Colors.green[100],
+                                        inactiveThumbColor: Colors.red[100],
+                                        materialTapTargetSize:
+                                            MaterialTapTargetSize.shrinkWrap,
+                                        onChanged: (bool isActive) {
+                                          Get.dialog(ConfirmationDialog(
+                                            title: !isActive
+                                                ? "Going Offline?"
+                                                : "Going Online?",
+                                            icon: 'assets/warning.png',
+                                            description: !isActive
+                                                ? 'Your station will longer receive orders'
+                                                : 'Your station will be available to receive orders',
+                                            onYesPressed: () {
+                                              Get.back();
+                                              authController
+                                                  .toggleStationClosedStatus();
+                                            },
+                                          ));
+                                        },
+                                      )
+                                    : Shimmer(
+                                        duration: const Duration(seconds: 2),
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(5),
+                                              color: Colors.grey[300]),
+                                          height: 30,
+                                          width: 50,
+                                        ))
+                                : const Center(
+                                    child: SizedBox(
+                                      width: 20,
+                                      height: 20,
+                                      child: CircularProgressIndicator(
+                                        color: AppTheme.blue,
+                                        strokeWidth: 3.0,
+                                      ),
+                                    ),
+                                  )
+                          ]),
                     ),
                     const SizedBox(height: 25),
                     Container(
@@ -203,7 +223,8 @@ class Dashboard extends StatelessWidget {
                               child: Padding(
                                 padding: const EdgeInsets.all(10.0),
                                 child: Column(
-                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.center,
                                     children: [
                                       Text(
                                         'This week'.tr,
@@ -211,10 +232,13 @@ class Dashboard extends StatelessWidget {
                                             fontSize: 15,
                                             fontWeight: FontWeight.w400,
                                             letterSpacing: 0.6,
-                                            color:
-                                                AppTheme.white.withOpacity(0.8)),
+                                            color: AppTheme.white
+                                                .withOpacity(0.8)),
                                       ),
-                                      Divider(thickness: 1, color: AppTheme.white.withOpacity(0.8)),
+                                      Divider(
+                                          thickness: 1,
+                                          color:
+                                              AppTheme.white.withOpacity(0.8)),
                                       Text(
                                         authController.profileModel != null
                                             ? PriceConverter.convertPrice(
@@ -247,18 +271,20 @@ class Dashboard extends StatelessWidget {
                                                   fontWeight: FontWeight.w600,
                                                   fontSize: Dimensions
                                                       .FONT_SIZE_EXTRA_LARGE,
-                                                  color:
-                                                      Theme.of(context).cardColor,
+                                                  color: Theme.of(context)
+                                                      .cardColor,
                                                 )),
-                                            SizedBox(width: 9,),
+                                            SizedBox(
+                                              width: 9,
+                                            ),
                                             Text(
                                               'orders'.tr,
                                               style: GoogleFonts.mulish(
                                                   fontSize: 12,
                                                   fontWeight: FontWeight.w300,
                                                   letterSpacing: 0.6,
-                                                  color:
-                                                  AppTheme.white.withOpacity(0.8)),
+                                                  color: AppTheme.white
+                                                      .withOpacity(0.8)),
                                             ),
                                           ]),
                                     ]),
@@ -266,25 +292,27 @@ class Dashboard extends StatelessWidget {
                             ),
                             Expanded(
                                 child: Padding(
-                                  padding: const EdgeInsets.all(15.0),
-                                  child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.center,
-                                      children: [
+                              padding: const EdgeInsets.all(15.0),
+                              child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  children: [
                                     Text(
                                       'This month'.tr,
                                       style: GoogleFonts.mulish(
                                           fontSize: 15,
                                           fontWeight: FontWeight.w400,
                                           letterSpacing: 0.6,
-                                          color: AppTheme.white.withOpacity(0.8)),
+                                          color:
+                                              AppTheme.white.withOpacity(0.8)),
                                     ),
-                                        Divider(thickness: 1, color: AppTheme.white.withOpacity(0.8)),
+                                    Divider(
+                                        thickness: 1,
+                                        color: AppTheme.white.withOpacity(0.8)),
                                     Text(
                                       authController.profileModel != null
                                           ? PriceConverter.convertPrice(
-                                              authController
-                                                  .profileModel!.thisWeekEarning!)
+                                              authController.profileModel!
+                                                  .thisWeekEarning!)
                                           : '0',
                                       style: GoogleFonts.mulish(
                                           fontSize: 16,
@@ -299,7 +327,8 @@ class Dashboard extends StatelessWidget {
                                             MainAxisAlignment.center,
                                         children: [
                                           Image.asset('assets/order.png',
-                                              color: Theme.of(context).cardColor,
+                                              color:
+                                                  Theme.of(context).cardColor,
                                               height: 12,
                                               width: 12),
                                           const SizedBox(
@@ -314,19 +343,21 @@ class Dashboard extends StatelessWidget {
                                                 color:
                                                     Theme.of(context).cardColor,
                                               )),
-                                          SizedBox(width: 9,),
+                                          SizedBox(
+                                            width: 9,
+                                          ),
                                           Text(
                                             'orders'.tr,
                                             style: GoogleFonts.mulish(
                                                 fontSize: 12,
                                                 fontWeight: FontWeight.w300,
                                                 letterSpacing: 0.6,
-                                                color:
-                                                AppTheme.white.withOpacity(0.8)),
+                                                color: AppTheme.white
+                                                    .withOpacity(0.8)),
                                           ),
                                         ]),
                                   ]),
-                                )),
+                            )),
                           ],
                         ),
                       ]),
